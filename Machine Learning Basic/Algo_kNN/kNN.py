@@ -52,17 +52,3 @@ def autoNorm(dataSet):
     normDataSet = dataSet - tile(minVals, (m, 1))
     normDataSet = normDataSet/tile(ranges, (m,1))
     return normDataSet, ranges, minVals
-
-def datingClassTest():
-    """测试分类器性能"""
-    hoRatio = 0.10                                          #训练集和测试集的比例
-    datingDataMat, datingLabels = file2matrix('Database\datingTestSet.txt')  #读取数据集
-    normMat, ranges, minVals = autoNorm(datingDataMat)     #归一化特征值
-    m = normMat.shape[0]                                   #shape 是 NumPy 数组的一个属性，返回一个元组，包含数组的维度信息;normMat.shape[0] 表示 normMat 的行数，即数据点的数量
-    numTestVecs = int(m*hoRatio)                           #测试集数量
-    errorCount = 0.0                                       #错误分类计数器
-    for i in range(numTestVecs):
-        classifierResult = classify0(normMat[i, :], normMat[numTestVecs:m, :], datingLabels[numTestVecs:m], 3)
-        print("the classifier came back with: %d, the real answer is: %d" % (classifierResult, datingLabels[i]))
-        if (classifierResult != datingLabels[i]): errorCount += 1.0
-    print("the total error rate is: %f" % (errorCount/float(numTestVecs)))
